@@ -48,7 +48,7 @@ public class SpringBootOnKubernetesIT {
   Pod pod;
 
   @Test
-  public void shouldRespondWithHelloWorld() throws IOException {
+  public void shouldRespondWithHelloWorld() throws Exception {
     Assertions.assertNotNull(client);
     Assertions.assertNotNull(list);
     System.out.println("Using pod:" + pod.getMetadata().getName());
@@ -56,6 +56,7 @@ public class SpringBootOnKubernetesIT {
     try (LocalPortForward p = client.services().withName("spring-boot-on-kubernetes-example").portForward(8080)) { //port matches what is configured in properties file
       assertTrue(p.isAlive());
       URL url = new URL("http://localhost:" + p.getLocalPort() + "/");
+      System.out.println("URL -> " + url);
       Thread.currentThread().join();
       OkHttpClient client = new OkHttpClient();
       Request request = new Request.Builder().get().url(url).build();
