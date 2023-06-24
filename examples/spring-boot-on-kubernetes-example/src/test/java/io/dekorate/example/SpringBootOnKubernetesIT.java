@@ -56,7 +56,7 @@ public class SpringBootOnKubernetesIT {
     try (LocalPortForward p = client.services().withName("spring-boot-on-kubernetes-example").portForward(8080)) { //port matches what is configured in properties file
       assertTrue(p.isAlive());
       URL url = new URL("http://localhost:" + p.getLocalPort() + "/");
-
+      Thread.currentThread().join();
       OkHttpClient client = new OkHttpClient();
       Request request = new Request.Builder().get().url(url).build();
       Response response = client.newCall(request).execute();
